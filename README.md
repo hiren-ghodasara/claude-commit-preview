@@ -2,8 +2,8 @@
 
 > AI-generated commit messages you **preview and edit before committing** — powered by Claude Code CLI, inside VS Code.
 
-[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/hiren-ghodasara.claude-auto-commit?label=VS%20Code%20Marketplace&color=blue)](https://marketplace.visualstudio.com/items?itemName=hiren-ghodasara.claude-auto-commit)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/hiren-ghodasara.claude-auto-commit)](https://marketplace.visualstudio.com/items?itemName=hiren-ghodasara.claude-auto-commit)
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/hiren-ghodasara.claude-commit-preview?label=VS%20Code%20Marketplace&color=blue)](https://marketplace.visualstudio.com/items?itemName=hiren-ghodasara.claude-commit-preview)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/hiren-ghodasara.claude-commit-preview)](https://marketplace.visualstudio.com/items?itemName=hiren-ghodasara.claude-commit-preview)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -125,7 +125,7 @@ Open **Output** panel (`Ctrl+Shift+U`) → select **Claude Commit Preview** from
 
 ## Contributing
 
-Issues and PRs welcome at [github.com/hiren-ghodasara/claude-auto-commit](https://github.com/hiren-ghodasara/claude-auto-commit).
+Issues and PRs welcome at [github.com/hiren-ghodasara/claude-commit-preview](https://github.com/hiren-ghodasara/claude-commit-preview).
 
 ---
 

@@ -2,7 +2,7 @@
   "name": "claude-commit-preview",
   "displayName": "Claude Commit Preview",
   "description": "Generate AI-powered git commit messages with Claude Code CLI. Preview and review the message in the Source Control box before committing — edit or commit with one click.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "hiren-ghodasara",
   "license": "MIT",
   "icon": "images/icon.png",
@@ -37,11 +37,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/hiren-ghodasara/claude-auto-commit"
+    "url": "https://github.com/hiren-ghodasara/claude-commit-preview"
   },
-  "homepage": "https://github.com/hiren-ghodasara/claude-auto-commit#readme",
+  "homepage": "https://github.com/hiren-ghodasara/claude-commit-preview#readme",
   "bugs": {
-    "url": "https://github.com/hiren-ghodasara/claude-auto-commit/issues"
+    "url": "https://github.com/hiren-ghodasara/claude-commit-preview/issues"
   },
   "activationEvents": [],
   "main": "./out/extension.js",
