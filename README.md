@@ -1,6 +1,6 @@
 # Claude Commit Preview
 
-> AI-generated commit messages with **preview before you commit** — powered by Claude Code CLI, inside VS Code.
+> AI-generated commit messages you **preview and edit before committing** — powered by Claude Code CLI, inside VS Code.
 
 [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/hiren-ghodasara.claude-auto-commit?label=VS%20Code%20Marketplace&color=blue)](https://marketplace.visualstudio.com/items?itemName=hiren-ghodasara.claude-auto-commit)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/hiren-ghodasara.claude-auto-commit)](https://marketplace.visualstudio.com/items?itemName=hiren-ghodasara.claude-auto-commit)
@@ -8,28 +8,41 @@
 
 ---
 
-## Preview Your Commit Message Before It's Committed
+## See It in Action
 
-Most AI commit tools commit instantly — you don't get a chance to review or edit.  
-**Claude Commit Preview is different.**
+<img src="images/commit-preview.gif" alt="Claude Commit Preview — generate, preview, and commit with one click" width="70%"/>
 
-Here's the flow:
-
-```
-Stage changes  →  Click ✨  →  Claude generates message
-     →  Message drops into SCM box  →  You review it
-          →  "Commit Now" or "Edit First" — your choice
-```
-
-You always stay in control. The message lands in your Source Control input box where you can read it, tweak it, or commit it as-is.
+Stage your changes, click ✨, and Claude fills your commit message box instantly.  
+**Read it. Edit it if you want. Then commit.**
 
 ---
 
-## What It Does
+## Why Claude Commit Preview?
 
-**Claude Commit Preview** uses the [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) already installed on your machine to analyze your staged git diff and generate a meaningful, conventional commit message — then fills it directly into the VS Code Source Control input box for your review.
+Most AI commit tools commit blindly — you don't see what's being written until it's done.  
+**Claude Commit Preview puts you in the driver's seat.**
 
-No API keys. No extra setup. Just stage, click, review, commit.
+1. Claude analyzes your staged diff using the Claude Code CLI already on your machine
+2. The generated message drops into your Source Control input box — visible and editable
+3. You choose: **Commit Now** or **Edit First**
+
+You always review before anything is committed. No surprises.
+
+---
+
+## How It Works
+
+```
+git add (stage changes)
+    ↓
+Click ✨ in Source Control toolbar
+    ↓
+Claude reads your staged diff via Claude CLI
+    ↓
+Commit message appears in the SCM input box   ← you can read & edit here
+    ↓
+"Commit Now"  or  "Edit First"  — your choice
+```
 
 ---
 
@@ -43,27 +56,14 @@ No API keys. No extra setup. Just stage, click, review, commit.
 
 ## Features
 
-- **Preview before commit** — message is filled into the SCM box so you can read and edit it first
-- **One-click generation** — ✨ button in the Source Control panel toolbar
-- **"Commit Now" or "Edit First"** — choose to commit immediately or refine the message
+- **Preview commit message before committing** — message is written into the SCM box, not committed blindly
+- **Edit before you commit** — full control, always
+- **One-click generation** — ✨ sparkle button in the Source Control toolbar
 - **Jira / Linear ticket auto-tagging** — detects branch ticket (e.g. `SP-123`) and appends `[SP-123]`
 - **Three commit styles** — Conventional Commits, simple one-liner, or detailed with body
-- **Zero API key setup** — reuses your existing Claude Code CLI session
+- **No API key required** — reuses your existing Claude Code CLI session
 - **Works with any language or framework**
-- **Debug output panel** — full logs in the Output panel for easy troubleshooting
-
----
-
-## How to Use
-
-1. Stage your changes (`git add` or click `+` in Source Control)
-2. Open the **Source Control** panel (`Ctrl+Shift+G`)
-3. Click the **✨ sparkle button** in the toolbar
-4. Claude analyzes your diff and fills the commit message into the input box
-5. **Review the message** — read it, edit it if needed
-6. Click **Commit Now** to commit immediately, or **Edit First** to refine it in the SCM panel
-
-> The message is always editable before it's committed. You're never locked in.
+- **Debug output panel** — full step-by-step logs in the Output panel
 
 ---
 
@@ -81,7 +81,7 @@ Configure via `Settings → Claude Commit Preview → Commit Style`:
 
 ## Jira / Linear Ticket Auto-Tagging
 
-If your branch name contains a ticket number, it is automatically appended to the commit message:
+If your branch name contains a ticket number, it is automatically appended to the generated message:
 
 | Branch name | Appended tag |
 |------------|-------------|
