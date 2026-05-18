@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1e3f"/>
+      <stop offset="100%" stop-color="#0f0f23"/>
+    </linearGradient>
+    <linearGradient id="commitDot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="boxFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d2d5e"/>
+      <stop offset="100%" stop-color="#1e1e46"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="128" height="128" rx="22" fill="url(#bg)"/>
+
+  <!-- Git timeline vertical line -->
+  <line x1="30" y1="20" x2="30" y2="108" stroke="#3a3a6a" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Past commit dot (top) -->
+  <circle cx="30" cy="28" r="4.5" fill="#3d3d70"/>
+  <circle cx="30" cy="28" r="2" fill="#5a5a9a"/>
+
+  <!-- Current commit dot (center, highlighted — the one being written) -->
+  <circle cx="30" cy="64" r="10" fill="url(#commitDot)" stroke="#c084fc" stroke-width="2.5"/>
+  <!-- Inner dot -->
+  <circle cx="30" cy="64" r="4" fill="#e9d5ff" opacity="0.6"/>
+
+  <!-- Future commit dot (bottom) -->
+  <circle cx="30" cy="100" r="4.5" fill="#3d3d70"/>
+  <circle cx="30" cy="100" r="2" fill="#5a5a9a"/>
+
+  <!-- Connector line from commit dot to preview box -->
+  <line x1="40" y1="64" x2="50" y2="64" stroke="#6060a0" stroke-width="1.5" stroke-dasharray="3,2.5"/>
+
+  <!-- Preview / SCM input box -->
+  <rect x="50" y="50" width="66" height="28" rx="6" fill="url(#boxFill)" stroke="#5b5b9e" stroke-width="1.5"/>
+
+  <!-- Text lines inside the preview box (representing the commit message) -->
+  <line x1="58" y1="60" x2="103" y2="60" stroke="#a0a0cc" stroke-width="2" stroke-linecap="round"/>
+  <line x1="58" y1="69" x2="88"  y2="69" stroke="#60608a" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Cursor blink line at end of first text line -->
+  <line x1="106" y1="57" x2="106" y2="63" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- AI sparkle — 4-point star (top right, Claude indicator) -->
+  <g transform="translate(97, 26)">
+    <path d="M0,-11 L2.8,-2.8 L11,0 L2.8,2.8 L0,11 L-2.8,2.8 L-11,0 L-2.8,-2.8 Z"
+          fill="#f59e0b" opacity="0.95"/>
+  </g>
+  <!-- Smaller satellite sparkles -->
+  <circle cx="83" cy="20" r="2.5" fill="#fbbf24" opacity="0.75"/>
+  <circle cx="110" cy="38" r="2" fill="#fcd34d" opacity="0.60"/>
+  <circle cx="80" cy="36" r="1.5" fill="#fde68a" opacity="0.50"/>
+
+  <!-- Review / approve checkmark badge (bottom right of box) -->
+  <circle cx="108" cy="90" r="10" fill="#059669"/>
+  <polyline points="103,90 106.5,93.5 113,86"
+            stroke="white" stroke-width="2.2" fill="none"
+            stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

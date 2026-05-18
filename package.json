@@ -1,0 +1,98 @@
+{
+  "name": "claude-commit-preview",
+  "displayName": "Claude Commit Preview",
+  "description": "Generate AI-powered git commit messages with Claude Code CLI. Preview and review the message in the Source Control box before committing — edit or commit with one click.",
+  "version": "1.0.0",
+  "publisher": "hiren-ghodasara",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "SCM Providers",
+    "Other"
+  ],
+  "keywords": [
+    "claude",
+    "claude code",
+    "anthropic",
+    "ai",
+    "commit",
+    "git",
+    "commit message",
+    "conventional commits",
+    "ai commit",
+    "auto commit",
+    "preview commit",
+    "review commit",
+    "commit message generator",
+    "ai commit message",
+    "generative ai",
+    "llm",
+    "git automation",
+    "developer tools",
+    "jira",
+    "linear"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hiren-ghodasara/claude-auto-commit"
+  },
+  "homepage": "https://github.com/hiren-ghodasara/claude-auto-commit#readme",
+  "bugs": {
+    "url": "https://github.com/hiren-ghodasara/claude-auto-commit/issues"
+  },
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claudeCommitPreview.generateMessage",
+        "title": "Generate Commit Message",
+        "category": "Claude Commit Preview",
+        "icon": "$(sparkle)"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "claudeCommitPreview.generateMessage",
+          "group": "navigation",
+          "when": "scmProvider == git"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Claude Commit Preview",
+      "properties": {
+        "claudeCommitPreview.commitStyle": {
+          "type": "string",
+          "default": "conventional",
+          "enum": [
+            "conventional",
+            "simple",
+            "detailed"
+          ],
+          "enumDescriptions": [
+            "Conventional Commits format (feat: ..., fix: ..., etc.)",
+            "Simple one-line message",
+            "Detailed message with body"
+          ],
+          "description": "Style of commit message to generate"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "package": "npx @vscode/vsce package --no-dependencies --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.41",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.9.3"
+  }
+}

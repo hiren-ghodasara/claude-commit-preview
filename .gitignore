@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Compiled output
+out/
+
+# Packaged extensions
+*.vsix
+
+# VS Code settings (keep .vscode/launch.json and .vscode/extensions.json if needed)
+.vscode/*
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
