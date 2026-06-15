@@ -1,8 +1,8 @@
 {
   "name": "claude-commit-preview",
   "displayName": "Claude Commit Preview",
-  "description": "Preview AI commit messages from Claude Code before you commit or push. Claude writes a Conventional Commit in your repo's own style — with the Jira/Linear ticket and a Co-Authored-By trailer — right in the Source Control box, so you can review and edit before committing.",
-  "version": "1.3.0",
+  "description": "Preview AI commit messages from Claude Code before you commit or push. Claude writes a Conventional Commit in your repo's own style — with the Jira/Linear ticket and a Co-Authored-By trailer — right in the Source Control box, so you can review and edit before committing. Works in single repos and multi-root, monorepo & umbrella workspaces — the ✨ button always targets the repo you click.",
+  "version": "1.4.0",
   "publisher": "hiren-ghodasara",
   "license": "MIT",
   "icon": "images/icon.png",
@@ -39,7 +39,11 @@
     "git automation",
     "developer tools",
     "jira",
-    "linear"
+    "linear",
+    "monorepo",
+    "multi-root workspace",
+    "umbrella workspace",
+    "workspace"
   ],
   "repository": {
     "type": "git",
@@ -61,6 +65,12 @@
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "claudeCommitPreview.generateMessage",
+          "when": "false"
+        }
+      ],
       "scm/title": [
         {
           "command": "claudeCommitPreview.generateMessage",

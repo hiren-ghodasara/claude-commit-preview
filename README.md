@@ -1,6 +1,6 @@
 # Claude Commit Preview
 
-> **Preview your Claude commit message before you commit or push** — AI-generated, in your repo's own style, fully editable in VS Code's Source Control box. Powered by the Claude Code CLI.
+> **Preview your Claude commit message before you commit or push** — AI-generated, in your repo's own style, fully editable in VS Code's Source Control box. Powered by the Claude Code CLI. Works in single repos and **multi-root, monorepo & umbrella workspaces** — the ✨ button always targets the repo you click.
 
 [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/hiren-ghodasara.claude-commit-preview?label=VS%20Code%20Marketplace&color=blue)](https://marketplace.visualstudio.com/items?itemName=hiren-ghodasara.claude-commit-preview)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/hiren-ghodasara.claude-commit-preview)](https://marketplace.visualstudio.com/items?itemName=hiren-ghodasara.claude-commit-preview)
@@ -84,6 +84,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - **Co-Authored-By trailer** — attribution added automatically (toggleable)
 - **Edit before you commit** — full control, always
 - **One-click generation** — ✨ sparkle button in the Source Control toolbar
+- **Multi-root, monorepo & umbrella workspace support** — the ✨ button targets the exact repository whose Source Control section you click, even when many repos are open at once
 - **No API key required** — reuses your existing Claude Code CLI session
 - **Works with any language or framework**
 - **Debug output panel** — full step-by-step logs in the Output panel

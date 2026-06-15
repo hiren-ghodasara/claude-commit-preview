@@ -21,9 +21,13 @@ export function activate(context: vscode.ExtensionContext) {
 
   const disposable = vscode.commands.registerCommand(
     "claudeCommitPreview.generateMessage",
-    async () => {
+    async (...args: any[]) => {
       dbg("\n--- Generate Commit Message triggered ---");
-      await generateCommitMessage();
+      // When launched from the Source Control title button (scm/title), VS Code
+      // passes that panel's git repository as the first argument, so we know
+      // exactly which repo the user clicked on. From the command palette there
+      // is no argument and we fall back to heuristics.
+      await generateCommitMessage(args[0]);
     }
   );
 
@@ -31,14 +35,30 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(log);
 }
 
-async function generateCommitMessage() {
-  const workspaceFolders = vscode.workspace.workspaceFolders;
-  if (!workspaceFolders || workspaceFolders.length === 0) {
-    vscode.window.showErrorMessage("Claude Commit Preview: No workspace folder found.");
+async function generateCommitMessage(invocationArg?: any) {
+  // Resolve the Git extension up front so we can pick the correct repository.
+  // The command is only available from the Source Control title button, so VS
+  // Code always hands us that panel's repository — this is how we target the
+  // right repo in a multi-root / umbrella workspace.
+  const gitExtension = vscode.extensions.getExtension("vscode.git");
+  if (!gitExtension) {
+    vscode.window.showErrorMessage("Claude Commit Preview: VS Code Git extension not found.");
+    return;
+  }
+  const git = gitExtension.isActive
+    ? gitExtension.exports
+    : await gitExtension.activate();
+  const api = git.getAPI(1);
+
+  const repo = resolveRepoFromArg(api, invocationArg);
+  if (!repo) {
+    vscode.window.showErrorMessage(
+      "Claude Commit Preview: Could not determine the repository. Click the ✨ button in the Source Control panel of the repo you want to commit."
+    );
     return;
   }
 
-  const repoPath = workspaceFolders[0].uri.fsPath;
+  const repoPath = repo.rootUri.fsPath;
   dbg(`[info] Repo path: ${repoPath}`);
 
   let diff = "";
@@ -144,26 +164,7 @@ Reply with ONLY the commit message — no explanation, no markdown fences, nothi
     return;
   }
 
-  const gitExtension = vscode.extensions.getExtension("vscode.git");
-  if (!gitExtension) {
-    vscode.window.showErrorMessage("Claude Commit Preview: VS Code Git extension not found.");
-    return;
-  }
-
-  const git = gitExtension.isActive
-    ? gitExtension.exports
-    : await gitExtension.activate();
-
-  const api = git.getAPI(1);
-  const repos = api.repositories;
-  dbg(`[git] Repositories found: ${repos?.length ?? 0}`);
-
-  if (!repos || repos.length === 0) {
-    vscode.window.showErrorMessage("Claude Commit Preview: No git repository found in workspace.");
-    return;
-  }
-
-  repos[0].inputBox.value = commitMessage;
+  repo.inputBox.value = commitMessage;
   dbg("[done] Commit message filled in SCM input box");
 
   const action = await vscode.window.showInformationMessage(
@@ -173,10 +174,38 @@ Reply with ONLY the commit message — no explanation, no markdown fences, nothi
   );
 
   if (action === "Commit Now") {
-    await vscode.commands.executeCommand("git.commit");
+    // Pass the resolved repo so the correct one is committed in a
+    // multi-root / umbrella workspace.
+    await vscode.commands.executeCommand("git.commit", repo);
   } else if (action === "Edit First") {
     await vscode.commands.executeCommand("workbench.view.scm");
   }
+}
+
+// When the command is invoked from the Source Control title button, VS Code
+// passes the clicked panel's repository as the first argument. Depending on the
+// VS Code version this is either the Git API Repository (has `rootUri`) or a
+// SourceControl (has `rootUri` too). Normalise it to one of the API's own
+// Repository objects by matching on the repo root.
+function resolveRepoFromArg(api: any, arg: any): any | undefined {
+  const rootFsPath: string | undefined =
+    arg?.rootUri?.fsPath ?? arg?.repository?.rootUri?.fsPath;
+  if (!rootFsPath) {
+    return undefined;
+  }
+  const match = (api.repositories ?? []).find(
+    (rp: any) => rp.rootUri.fsPath === rootFsPath
+  );
+  if (match) {
+    dbg(`[git] Repo from SCM button: ${match.rootUri.fsPath}`);
+    return match;
+  }
+  // The arg is already a usable Repository even if it isn't in api.repositories.
+  if (arg?.rootUri && arg?.inputBox && arg?.state) {
+    dbg(`[git] Repo from SCM button (direct): ${rootFsPath}`);
+    return arg;
+  }
+  return undefined;
 }
 
 // Remove any surrounding markdown code fences the model may have wrapped the
