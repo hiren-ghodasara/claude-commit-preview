@@ -53,7 +53,7 @@ This mirrors the official [`/commit-commands:commit`](https://github.com/anthrop
 Claude writes the whole message — subject, body, ticket, and co-author trailer — matching the conventions it sees in your recent commits:
 
 ```
-feat: support agent run cancellation [SP-15404]
+feat: support agent run cancellation [XX-12345]
 
 Add cancelled activity status and sync linked activity status from run
 items, treating cancellation as final so a racing worker write cannot
@@ -63,7 +63,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 - **Conventional Commits subject** focused on *intent*, not a file-by-file dump
-- **Ticket tag** (e.g. `[SP-15404]`) inferred from your branch name and recent commit history — no configuration, no regex to maintain
+- **Ticket tag** (e.g. `[XX-12345]`) inferred from your branch name and recent commit history — no configuration, no regex to maintain
 - **Co-Authored-By trailer** written by Claude itself, carrying the actual model name
 
 ---
@@ -80,7 +80,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 - **Preview your commit message before committing** — written into the SCM box, never committed blindly
 - **Matches your repo's commit style** — Claude learns the format from your recent commits, like `/commit-commands:commit`
-- **Smart ticket detection** — Jira/Linear tickets (e.g. `SP-123`) inferred from the branch and history, placed in the subject
+- **Smart ticket detection** — Jira/Linear tickets (e.g. `XX-12345`) inferred from the branch and history, placed in the subject
 - **Co-Authored-By trailer** — attribution added automatically (toggleable)
 - **Edit before you commit** — full control, always
 - **One-click generation** — ✨ sparkle button in the Source Control toolbar
@@ -96,9 +96,9 @@ If your branch name contains a ticket number, Claude includes it in the commit s
 
 | Branch name | Subject tag |
 |------------|-------------|
-| `SP-123` | `[SP-123]` |
-| `fix/SP-123` | `[SP-123]` |
-| `feat/SP-123-some-description` | `[SP-123]` |
+| `XX` | `[XX-123]` |
+| `fix/XX-12345` | `[XX-12345]` |
+| `feat/XX-123-some-description` | `[XX-123]` |
 | `main`, `develop` | *(none — no ticket to infer)* |
 
 No allow-list to configure — Claude infers the project key and format from your history.
