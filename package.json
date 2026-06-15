@@ -1,8 +1,8 @@
 {
   "name": "claude-commit-preview",
   "displayName": "Claude Commit Preview",
-  "description": "Generate AI-powered git commit messages with Claude Code CLI. Preview and review the message in the Source Control box before committing — edit or commit with one click.",
-  "version": "1.1.0",
+  "description": "Preview AI commit messages from Claude Code before you commit or push. Claude writes a Conventional Commit in your repo's own style — with the Jira/Linear ticket and a Co-Authored-By trailer — right in the Source Control box, so you can review and edit before committing.",
+  "version": "1.3.0",
   "publisher": "hiren-ghodasara",
   "license": "MIT",
   "icon": "images/icon.png",
@@ -16,6 +16,7 @@
   "keywords": [
     "claude",
     "claude code",
+    "claude code cli",
     "anthropic",
     "ai",
     "commit",
@@ -23,11 +24,16 @@
     "commit message",
     "conventional commits",
     "ai commit",
+    "ai commit message",
     "auto commit",
     "preview commit",
+    "preview commit message",
+    "commit message preview",
     "review commit",
+    "commit before push",
     "commit message generator",
-    "ai commit message",
+    "co-authored-by",
+    "source control",
     "generative ai",
     "llm",
     "git automation",
@@ -66,20 +72,10 @@
     "configuration": {
       "title": "Claude Commit Preview",
       "properties": {
-        "claudeCommitPreview.commitStyle": {
-          "type": "string",
-          "default": "conventional",
-          "enum": [
-            "conventional",
-            "simple",
-            "detailed"
-          ],
-          "enumDescriptions": [
-            "Conventional Commits format (feat: ..., fix: ..., etc.)",
-            "Simple one-line message",
-            "Detailed message with body"
-          ],
-          "description": "Style of commit message to generate"
+        "claudeCommitPreview.addCoAuthor": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ask Claude to end the message with its Co-Authored-By trailer, matching the /commit-commands:commit style."
         }
       }
     }

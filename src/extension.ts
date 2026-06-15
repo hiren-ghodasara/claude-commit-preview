@@ -44,6 +44,7 @@ async function generateCommitMessage() {
   let diff = "";
   let stagedFiles = "";
   let branch = "";
+  let recentCommits = "";
 
   try {
     diff = execSync("git diff --cached", {
@@ -58,6 +59,16 @@ async function generateCommitMessage() {
     branch = execSync("git rev-parse --abbrev-ref HEAD", {
       cwd: repoPath,
     }).toString().trim();
+
+    // Recent commits let Claude infer this repo's subject format and any
+    // ticket convention (e.g. "[SP-123]") on its own — same as /commit-commands:commit.
+    try {
+      recentCommits = execSync("git log --oneline -n 10", {
+        cwd: repoPath,
+      }).toString().trim();
+    } catch {
+      recentCommits = "";
+    }
 
     dbg(`[git] Branch: ${branch}`);
     dbg(`[git] Staged files:\n${stagedFiles || "(none)"}`);
@@ -77,25 +88,33 @@ async function generateCommitMessage() {
   }
 
   const config = vscode.workspace.getConfiguration("claudeCommitPreview");
-  const commitStyle = config.get<string>("commitStyle") || "conventional";
-  dbg(`[config] Commit style: ${commitStyle}`);
+  const addCoAuthor = config.get<boolean>("addCoAuthor") ?? true;
+  dbg(`[config] Co-author: ${addCoAuthor}`);
 
-  const styleInstructions: Record<string, string> = {
-    conventional: `Follow Conventional Commits: <type>(<scope>): <description>. Types: feat, fix, docs, style, refactor, perf, test, chore. Keep subject under 72 chars.`,
-    simple: `Write a short one-line message under 72 characters starting with a verb (Add, Fix, Update, Remove).`,
-    detailed: `Write a short subject line, blank line, then a body explaining WHAT changed and WHY using bullet points.`,
-  };
+  const coAuthorRule = addCoAuthor
+    ? `- End with your standard "Co-Authored-By: Claude ... <noreply@anthropic.com>" trailer on its own line, after a blank line.`
+    : `- Do NOT add any co-author or attribution trailer.`;
 
-  const prompt = `You are an expert developer. Analyze this git diff and write a commit message.
+  const prompt = `Based on the staged changes below, write a single git commit message — the same message you would use if you were creating this commit yourself.
 
-Style: ${styleInstructions[commitStyle]}
+Match this repository's established style as shown in the recent commits: use the same subject format and the same ticket/issue convention (e.g. a "[PROJECT-123]" tag) if the repo uses one. Infer the ticket from the branch name when that convention is in use.
+
+Guidelines:
+- Subject: concise and imperative, focused on the INTENT of the change (what it accomplishes), not a file-by-file summary.
+- Then a blank line, then a body in flowing prose wrapped at ~72 characters explaining what changed and why. Omit the body for trivial changes.
+${coAuthorRule}
+
+Current branch: ${branch}
+
+Recent commits (match their format and ticket convention):
+${recentCommits || "(none)"}
 
 Staged files:
 ${stagedFiles}
 
-Diff:
+Staged diff:
 \`\`\`diff
-${diff.slice(0, 6000)}${diff.length > 6000 ? "\n... (truncated)" : ""}
+${diff.slice(0, 12000)}${diff.length > 12000 ? "\n... (truncated)" : ""}
 \`\`\`
 
 Reply with ONLY the commit message — no explanation, no markdown fences, nothing else.`;
@@ -115,11 +134,7 @@ Reply with ONLY the commit message — no explanation, no markdown fences, nothi
       commitMessage = await runClaude(prompt);
 
       if (commitMessage) {
-        const ticket = extractJiraTicket(branch);
-        if (ticket) {
-          commitMessage = `${commitMessage} [${ticket}]`;
-          dbg(`[git] Jira ticket extracted: ${ticket}`);
-        }
+        commitMessage = stripFences(commitMessage);
         dbg(`[claude] Final message:\n${commitMessage}`);
       }
     }
@@ -164,10 +179,11 @@ Reply with ONLY the commit message — no explanation, no markdown fences, nothi
   }
 }
 
-function extractJiraTicket(branch: string): string {
-  // Matches patterns like SP-123, PROJ-456 anywhere in the branch name
-  const match = branch.match(/([A-Z]+-\d+)/i);
-  return match ? match[1].toUpperCase() : "";
+// Remove any surrounding markdown code fences the model may have wrapped the
+// message in. Everything else (subject, ticket, body, co-author trailer) is
+// produced by Claude itself, matching /commit-commands:commit.
+function stripFences(raw: string): string {
+  return raw.trim().replace(/^```[a-zA-Z]*\n?/, "").replace(/\n?```$/, "").trim();
 }
 
 function runClaude(prompt: string): Promise<string> {
